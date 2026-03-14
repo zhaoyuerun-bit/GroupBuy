@@ -1,0 +1,26 @@
+# Build
+/build
+/entry/build
+/.preview
+/entry/.preview
+
+# IDE
+/.idea
+*.iml
+local.properties
+
+# hvigor
+/.hvigor
+/oh_modules
+/entry/oh_modules
+**/node_modules
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Signing (敏感信息不要上传)
+*.p12
+*.p7b
+*.cer
+build-profile.json5

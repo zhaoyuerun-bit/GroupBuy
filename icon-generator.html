@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>GroupBuy Icon Generator</title>
+<style>
+  body { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background: #f0f0f0; font-family: "PingFang SC", sans-serif; gap: 20px; }
+  canvas { border-radius: 40px; box-shadow: 0 8px 32px rgba(0,0,0,0.15); }
+  .info { text-align: center; color: #666; font-size: 14px; }
+  .sizes { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; }
+  .size-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .size-label { font-size: 12px; color: #999; }
+  button { padding: 10px 28px; font-size: 15px; background: #FF6B00; color: #fff; border: none; border-radius: 8px; cursor: pointer; }
+  button:hover { background: #e05e00; }
+</style>
+</head>
+<body>
+
+<h2>校园拼单 - 应用图标</h2>
+
+<div class="sizes">
+  <div class="size-item">
+    <canvas id="icon216" width="216" height="216"></canvas>
+    <span class="size-label">216 × 216 (上架用)</span>
+    <button onclick="download('icon216', 'groupbuy_icon_216.png')">下载 216px</button>
+  </div>
+  <div class="size-item">
+    <canvas id="icon512" width="512" height="512"></canvas>
+    <span class="size-label">512 × 512 (高清)</span>
+    <button onclick="download('icon512', 'groupbuy_icon_512.png')">下载 512px</button>
+  </div>
+</div>
+
+<p class="info">点击按钮下载 PNG 图标，也可以右键画布 → 另存为图片</p>
+
+<script>
+function drawIcon(canvasId) {
+  const canvas = document.getElementById(canvasId);
+  const ctx = canvas.getContext('2d');
+  const s = canvas.width;
+  const r = s * 0.22; // corner radius
+
+  // Background: warm orange gradient
+  const grad = ctx.createLinearGradient(0, 0, s, s);
+  grad.addColorStop(0, '#FF8C00');
+  grad.addColorStop(0.5, '#FF6B00');
+  grad.addColorStop(1, '#E85500');
+
+  // Rounded rect background
+  ctx.beginPath();
+  ctx.moveTo(r, 0);
+  ctx.lineTo(s - r, 0);
+  ctx.quadraticCurveTo(s, 0, s, r);
+  ctx.lineTo(s, s - r);
+  ctx.quadraticCurveTo(s, s, s - r, s);
+  ctx.lineTo(r, s);
+  ctx.quadraticCurveTo(0, s, 0, s - r);
+  ctx.lineTo(0, r);
+  ctx.quadraticCurveTo(0, 0, r, 0);
+  ctx.closePath();
+  ctx.fillStyle = grad;
+  ctx.fill();
+
+  // Subtle inner glow
+  const glowGrad = ctx.createRadialGradient(s * 0.3, s * 0.25, 0, s * 0.5, s * 0.5, s * 0.7);
+  glowGrad.addColorStop(0, 'rgba(255,255,255,0.15)');
+  glowGrad.addColorStop(1, 'rgba(255,255,255,0)');
+  ctx.fillStyle = glowGrad;
+  ctx.fill();
+
+  // Draw shopping bag shape
+  const cx = s * 0.5;
+  const cy = s * 0.52;
+  const bagW = s * 0.42;
+  const bagH = s * 0.38;
+  const bagTop = cy - bagH * 0.35;
+  const bagBot = cy + bagH * 0.65;
+  const bagL = cx - bagW * 0.5;
+  const bagR = cx + bagW * 0.5;
+  const bagRadius = s * 0.04;
+
+  // Bag body
+  ctx.beginPath();
+  ctx.moveTo(bagL + bagRadius, bagTop);
+  ctx.lineTo(bagR - bagRadius, bagTop);
+  ctx.quadraticCurveTo(bagR, bagTop, bagR, bagTop + bagRadius);
+  ctx.lineTo(bagR - s * 0.02, bagBot - bagRadius);
+  ctx.quadraticCurveTo(bagR - s * 0.02, bagBot, bagR - s * 0.02 - bagRadius, bagBot);
+  ctx.lineTo(bagL + s * 0.02 + bagRadius, bagBot);
+  ctx.quadraticCurveTo(bagL + s * 0.02, bagBot, bagL + s * 0.02, bagBot - bagRadius);
+  ctx.lineTo(bagL, bagTop + bagRadius);
+  ctx.quadraticCurveTo(bagL, bagTop, bagL + bagRadius, bagTop);
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(255,255,255,0.95)';
+  ctx.fill();
+
+  // Bag handle (arc)
+  ctx.beginPath();
+  ctx.arc(cx, bagTop, s * 0.1, Math.PI, 0, false);
+  ctx.lineWidth = s * 0.03;
+  ctx.strokeStyle = 'rgba(255,255,255,0.95)';
+  ctx.lineCap = 'round';
+  ctx.stroke();
+
+  // "拼" character on the bag
+  ctx.fillStyle = '#FF6B00';
+  ctx.font = `bold ${s * 0.18}px "PingFang SC", "Microsoft YaHei", sans-serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('拼', cx, cy + s * 0.1);
+
+  // Small people dots at the top-right (representing group)
+  const dotColors = ['#FFD54F', '#FFFFFF', '#FFE0B2'];
+  const dotR = s * 0.032;
+  for (let i = 0; i < 3; i++) {
+    const angle = -Math.PI * 0.15 + i * Math.PI * 0.22;
+    const dist = s * 0.35;
+    const dx = cx + Math.cos(angle) * dist;
+    const dy = s * 0.18 + Math.sin(angle) * dist * 0.3;
+    ctx.beginPath();
+    ctx.arc(dx, dy, dotR, 0, Math.PI * 2);
+    ctx.fillStyle = dotColors[i];
+    ctx.fill();
+    ctx.lineWidth = s * 0.005;
+    ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+    ctx.stroke();
+  }
+
+  // "+" sign at bottom right corner
+  const plusX = cx + s * 0.2;
+  const plusY = cy + s * 0.22;
+  const plusSize = s * 0.06;
+  ctx.beginPath();
+  ctx.arc(plusX, plusY, s * 0.055, 0, Math.PI * 2);
+  ctx.fillStyle = '#FFD54F';
+  ctx.fill();
+  ctx.fillStyle = '#FF6B00';
+  ctx.font = `bold ${s * 0.07}px sans-serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('+', plusX, plusY);
+}
+
+function download(canvasId, filename) {
+  const canvas = document.getElementById(canvasId);
+  const link = document.createElement('a');
+  link.download = filename;
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+drawIcon('icon216');
+drawIcon('icon512');
+</script>
+</body>
+</html>

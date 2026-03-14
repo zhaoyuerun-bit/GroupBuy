@@ -1,0 +1,24 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "校园拼单主模块"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "校园拼单入口"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "校园拼单"
+    },
+    {
+      "name": "nfc_reason",
+      "value": "用于碰一碰邀请好友加入拼单"
+    },
+    {
+      "name": "distributed_reason",
+      "value": "用于多设备间同步拼单数据"
+    }
+  ]
+}
